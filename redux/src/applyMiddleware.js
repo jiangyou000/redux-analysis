@@ -2,6 +2,7 @@ import compose from './compose'
 
 //这个部分读起来比较懵，这里有一篇文章先看下
 //https://github.com/zp1112/blog/issues/11
+//https://github.com/fi3ework/blog/issues/14
 
 /**
  * Creates a store enhancer that applies middleware to the dispatch method
@@ -47,6 +48,7 @@ export default function applyMiddleware(...middlewares) {
       //保证每次拿到的store是最新的
       getState: store.getState,
       //这里传入的dispatch其实是下面的那个能正常使用的dispatch，也就是已经经过中间件增强过的dispatch
+      //这里必须传一个闭包的dispatch不然中间件中使用dispatch时使用的仍然是原来的store.dispatch而不是增强过的
       dispatch: (...args) => dispatch(...args)
     }
     //遍历中间件，执行每一个中间件，将middlewareAPI作为参数传入每一个中间件
